@@ -54,13 +54,3 @@ fun BottomNavigationBar(navController: NavController) {
         }
     }
 }
-
-// preview BottomNavigationBar
-//@Preview(showSystemUi = true, showBackground = true)
-//@Composable
-//fun BottomNavigationBarPreview() {
-//    BottomNavigationBar(
-//        navController = TODO() // WTF am I even doing
-
-//    )
-//}
