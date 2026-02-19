@@ -1,0 +1,357 @@
+
+# PART 1: STEP-BY-STEP — WHERE WE ACTUALLY START
+
+## Step 0: Decide the order (this is now locked)
+
+**Order we will follow:**
+
+1. Firebase project
+2. Firestore database + collections
+3. Sample data entry
+4. Android app setup
+5. Read-only data flow (Firestore → App)
+6. UI screens
+7. Admin panel
+8. Extras (notifications, payments)
+
+We are starting at **1**.
+
+---
+
+## Step 1: Create Firebase project
+
+1. Open your browser
+2. Go to **[https://console.firebase.google.com](https://console.firebase.google.com)**
+3. Click **“Add project”**
+4. Project name
+   Example:
+   `PCEA-Imani-Church`
+5. Click **Continue**
+6. Google Analytics
+
+   * You can **disable it** for now (not needed)
+7. Click **Create project**
+8. Wait for Firebase to finish setup
+9. Click **Continue**
+
+At this point, you have a Firebase project. Nothing else yet.
+
+---
+
+## Step 2: Enable Firestore (the database)
+
+1. In the left sidebar, click **Build → Firestore Database**
+2. Click **Create database**
+3. Choose **Start in test mode**
+
+   * This allows quick development
+   * We will lock security rules later
+4. Choose a **location**
+
+   * Closest to Kenya is usually `europe-west` (this is fine)
+5. Click **Enable**
+
+Now the database exists.
+
+Important truth:
+Firestore does **not** force schemas. *You* must enforce discipline.
+
+---
+
+## Step 3: Create collections (no app yet)
+
+You will manually create collections one by one.
+
+Click **“Start collection”**
+
+### Collection 1: `sermons`
+
+Add your first document manually.
+
+Fields:
+
+* title → string
+* preacher → string
+* description → string
+* coverImageUrl → string (can be empty for now)
+* datePreached → timestamp
+* durationMinutes → number
+* videoUrl → string (optional)
+* audioUrl → string (optional)
+* language → string (`"en"`)
+* createdAt → timestamp
+
+Save.
+
+Add **2–3 sermons**. Realistic ones. Not “test1”.
+
+---
+
+### Collection 2: `events`
+
+Fields:
+
+* title → string
+* dateTime → timestamp
+* location → string
+* description → string
+* category → string
+* createdAt → timestamp
+
+Add at least 2 events.
+
+---
+
+### Collection 3: `word_of_week`
+
+Fields:
+
+* book → string
+* chapter → number
+* verse → string (e.g. `"1–3"`)
+* text → string
+* startDate → timestamp
+* endDate → timestamp
+* language → string
+
+Only **one active** record should overlap dates.
+
+---
+
+### Collection 4: `announcements`
+
+Fields:
+
+* title → string
+* message → string
+* startDate → timestamp
+* endDate → timestamp
+* createdAt → timestamp
+
+---
+
+### Collection 5: `notes` (empty for now)
+
+We’ll use it later.
+
+Stop here.
+**Do not touch the app yet.**
+
+---
+
+# PART 2: FULL DEVELOPMENT PLAN (REFERENCE DOCUMENT)
+
+You can copy this whole section into a document.
+
+---
+
+## PROJECT: PCEA IMANI CHURCH APP
+
+### GOAL
+
+A simple, reliable church app for the entire congregation to access sermons, events, announcements, devotion (Word of the Week), and giving.
+
+---
+
+## VERSION 1 (V1) SCOPE — LOCKED
+
+### Included
+
+* Home dashboard
+* Word of the Week
+* Sermons (live + recorded)
+* Events
+* Announcements
+* Bible (read-only)
+* Notes (local)
+* Giving (M-Pesa Paybill / STK Push later)
+
+### Excluded
+
+* Mandatory login
+* Member management
+* Community/chat
+* In-app livestreaming
+* Analytics dashboards
+
+---
+
+## DATA ARCHITECTURE (FIRESTORE)
+
+### Collections
+
+**sermons**
+
+* title
+* preacher
+* description
+* coverImageUrl
+* datePreached
+* durationMinutes
+* videoUrl
+* audioUrl
+* language
+* createdAt
+
+**events**
+
+* title
+* dateTime
+* location
+* description
+* category
+* createdAt
+
+**word_of_week**
+
+* book
+* chapter
+* verse
+* text
+* startDate
+* endDate
+* language
+
+**announcements**
+
+* title
+* message
+* startDate
+* endDate
+* createdAt
+
+**notes**
+
+* title
+* content
+* createdAt
+* (userId later)
+
+---
+
+## APP NAVIGATION STRUCTURE
+
+**Bottom Navigation**
+
+* Home
+* Bible
+* Sermons
+* Events
+* More
+
+**More Screen**
+
+* Giving
+* Announcements
+* Notes
+* About Church
+* Contact
+
+---
+
+## SCREEN RESPONSIBILITIES
+
+### Home
+
+* Greeting (optional login)
+* Word of the Week card
+* 3–4 discover cards
+
+  * Give
+  * Live Service
+  * Sermons
+  * Events
+
+### Sermons
+
+* List of sermon cards
+* One primary action (Play)
+* Detail screen → Watch / Listen
+
+### Bible
+
+* Read-only Bible
+* Notes per verse
+
+### Events
+
+* List view
+* Event detail
+
+### Notes
+
+* List of created notes
+* Create / edit note
+
+---
+
+## TECH STACK
+
+### Backend
+
+* Firebase Firestore
+* Firebase Authentication (admins only)
+* Firebase Cloud Messaging (later)
+
+### Android App
+
+* Kotlin
+* Jetpack Compose
+* MVVM
+* Firebase SDK
+
+### Admin Panel (Web)
+
+* Simple web app
+* Firebase Auth
+* Firestore writes
+* CRUD for sermons, events, word of week, announcements
+
+---
+
+## DEVELOPMENT PHASES
+
+### Phase 1: Backend Setup
+
+* Firebase project
+* Firestore collections
+* Sample data
+
+### Phase 2: Android App (Read-only)
+
+* Connect to Firebase
+* Fetch sermons, events, word of week
+* Display data
+
+### Phase 3: UI Completion
+
+* Finalize screens
+* Navigation
+* Error states
+
+### Phase 4: Admin Panel
+
+* Admin login
+* CRUD operations
+
+### Phase 5: Enhancements
+
+* Notifications
+* Payments
+* YouTube Live support
+
+---
+
+## DESIGN PRINCIPLES
+
+* Simple > Fancy
+* Content-first
+* Offline-friendly
+* Admin convenience over aesthetics
+
+---
+
+## FINAL RULE
+
+**No new features unless they solve a real church problem.**
+
