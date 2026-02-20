@@ -1,5 +1,6 @@
 package com.devcraft.pceaimani.ui.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,7 +12,7 @@ import com.devcraft.pceaimani.ui.screens.bible.BibleScreen
 import com.devcraft.pceaimani.ui.screens.home.HomeScreen
 
 @Composable
-fun AppNavGraph(navController: NavHostController) {
+fun AppNavGraph(paddingValues: PaddingValues, navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
