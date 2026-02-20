@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
                         BottomNavigationBar(navController)
                     }
                 ) {paddingValues ->
-
                     Box(
                         modifier = Modifier.padding(paddingValues)
                     ) {

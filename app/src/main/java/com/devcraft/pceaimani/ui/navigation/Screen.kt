@@ -17,7 +17,7 @@ sealed class Screen(
     object Home : Screen(
         route = "home",
         title = "Home",
-        icon = FontAwesomeIcons.Solid.Home
+        icon = FontAwesomeIcons.Solid.Home,
     )
 
     object Sermons : Screen(
