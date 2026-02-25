@@ -74,7 +74,7 @@ fun VerseTodayCard(verseText: String, verseNumber: String) {
 
             Text(
                 text = "- $verseNumber",
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary
             )
