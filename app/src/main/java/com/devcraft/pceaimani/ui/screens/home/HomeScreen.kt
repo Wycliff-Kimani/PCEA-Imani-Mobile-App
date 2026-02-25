@@ -2,7 +2,6 @@ package com.devcraft.pceaimani.ui.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,84 +10,62 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.devcraft.pceaimani.R
 import com.devcraft.pceaimani.ui.components.FeatureCard
-import com.devcraft.pceaimani.ui.components.TopApp
 import com.devcraft.pceaimani.ui.components.VerseTodayCard
-import com.devcraft.pceaimani.ui.theme.lightBlue
+import com.devcraft.pceaimani.ui.navigation.Screen
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val verseText = "The fear of the Lord is the beginning of wisdom; A good understanding have all those who do His commandments. His praise endures forever."
     val verseNumber = "Psalms 111:10"
 
     val features = listOf(
-        Pair("Sermon Notes", R.drawable.notes_icon),
-        Pair("Bible", R.drawable.bible_icon),
-        Pair("Live", R.drawable.live_icon),
-        Pair("Sermons", R.drawable.sermons_icon),
-        Pair("Prayer", R.drawable.prayer_icon),
-        Pair("Events", R.drawable.events_icon)
+        Triple("Sermon Notes", R.drawable.notes_icon) { navController.navigate(Screen.Home.route) },
+        Triple("Bible", R.drawable.bible_icon) { navController.navigate(Screen.Bible.route) },
+        Triple("Live", R.drawable.live_icon) { navController.navigate(Screen.Home.route) },
+        Triple("Sermons", R.drawable.sermons_icon) { navController.navigate(Screen.Sermons.route) },
+        Triple("Prayer", R.drawable.prayer_icon) { navController.navigate(Screen.Home.route) },
+        Triple("Events", R.drawable.events_icon) { navController.navigate(Screen.Events.route) }
     )
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier.fillMaxSize().padding(12.dp)
     ) {
-        TopApp(
-            title = "PCEA Imani",
-            showHomeSubtitle = true   //
+        // Verse of the Week Card
+        VerseTodayCard(verseText, verseNumber)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Discover Section Title
+        Text(
+            text = "Discover",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary
         )
 
-        Column(
-            modifier = Modifier.padding(8.dp)
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Feature Cards Grid
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
-            // Verse of the Week Card
-            VerseTodayCard(verseText, verseNumber)
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            // Discover Section Title
-            Text(
-                text = "Discover",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = lightBlue
-            )
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            // Feature Cards Grid
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(bottom = 120.dp)
-            ) {
-                items(features) { (title, icon) ->
-                    FeatureCard(
-                        title = title,
-                        icon = icon
-                    )
-                }
+            items(features) { (title, icon, onClick) ->
+                FeatureCard(
+                    title = title,
+                    icon = icon,
+                    onClick = onClick
+                )
             }
-            Spacer(modifier = Modifier.height(15.dp))
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
 }

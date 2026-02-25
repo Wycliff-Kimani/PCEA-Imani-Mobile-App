@@ -18,12 +18,6 @@ import com.devcraft.pceaimani.ui.theme.PCEAImaniTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Check permission for internet access and request if not granted
-        if (checkSelfPermission(android.Manifest.permission.INTERNET) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(android.Manifest.permission.INTERNET), 1)
-        }
-
         enableEdgeToEdge()
         setContent {
 

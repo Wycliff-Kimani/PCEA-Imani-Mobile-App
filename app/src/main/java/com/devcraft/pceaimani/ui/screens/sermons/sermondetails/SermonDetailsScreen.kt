@@ -1,13 +1,27 @@
-package com.devcraft.pceaimani.ui.screens.sermons
+package com.devcraft.pceaimani.ui.screens.sermons.sermondetails
 
-import android.util.Log
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,95 +31,85 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.devcraft.pceaimani.data.model.Sermon
+import com.devcraft.pceaimani.utils.formattedDate
 
-// Safe fallback date formatter
-fun Sermon.formattedDate(): String {
-    val timestamp = datePreached ?: createdAt
-    if (timestamp == null) return "Date not available"
-
-    val dateString = timestamp.toDate().toString()
-    // Format: "Thu Jan 15 13:22 2026"
-    val parts = dateString.split(" ")
-    return if (parts.size >= 4) {
-        // Take day of week, month, day, time, and year
-        val timeParts = parts[3].split(":")
-        val timeWithoutSeconds = if (timeParts.size >= 2) {
-            "${timeParts[0]}:${timeParts[1]}"
-        } else {
-            parts[3]
-        }
-        "${parts[0]} ${parts[1]} ${parts[2]} $timeWithoutSeconds ${parts.last()}"
-    } else {
-        dateString
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SermonDetailsScreen(
     sermonId: String,
-    viewModel: SermonDetailsViewModel = viewModel(),
+    viewModel: SermonDetailsViewModel = viewModel(
+        factory = SermonDetailsViewModelFactory(sermonId)
+    ),
     onBackClick: () -> Unit
 ) {
-    Log.d("Details", "Screen loaded with ID: $sermonId")
-
     val sermon by viewModel.sermon.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Sermon") },
-                navigationIcon = {
+    when {
+        isLoading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = Color(0xFFF57C00))
+            }
+        }
+
+        error != null -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    IconButton(
+                        onClick = onBackClick,
+                        modifier = Modifier.align(Alignment.Start)
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                    Text("Error loading sermon", color = Color.Red)
+                    Text(error ?: "Unknown issue")
+                    Spacer(Modifier.height(16.dp))
+                    Button(onClick = { viewModel.retry() }) { Text("Retry") }
+                }
+            }
+        }
+
+        sermon == null -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                    Text("Sermon not found for ID: $sermonId")
+                }
+            }
+        }
+
+        else -> {
+            val currentSermon = sermon!!
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Back Button Header
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
                 }
-            )
-        }
-    ) { innerPadding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize().padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = Color(0xFFF57C00))
-                }
-            }
-
-            error != null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize().padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Error loading sermon", color = Color.Red)
-                        Text(error ?: "Unknown issue")
-                        Spacer(Modifier.height(16.dp))
-                        Button(onClick = { viewModel.retry() }) { Text("Retry") }
-                    }
-                }
-            }
-
-            sermon == null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize().padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Sermon not found for ID: $sermonId")
-                }
-            }
-
-            else -> {
-                val currentSermon = sermon!!
 
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding)
                         .verticalScroll(rememberScrollState())
                 ) {
                     AsyncImage(

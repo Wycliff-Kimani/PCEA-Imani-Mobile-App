@@ -1,4 +1,4 @@
-package com.devcraft.pceaimani.ui.screens.account
+package com.devcraft.pceaimani.ui.screens.events
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.devcraft.pceaimani.R
 
 @Composable
-fun AccountScreen() {
+fun EventsScreen() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -30,7 +30,7 @@ fun AccountScreen() {
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Account screen is under construction",
+            text = "Events screen is under construction",
             style = MaterialTheme.typography.bodyLarge
         )
     }

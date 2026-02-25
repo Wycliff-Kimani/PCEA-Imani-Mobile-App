@@ -1,7 +1,7 @@
-package com.devcraft.pceaimani.ui.screens.sermons
+package com.devcraft.pceaimani.ui.screens.sermons.sermondetails
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.devcraft.pceaimani.data.model.Sermon
 import com.devcraft.pceaimani.data.repository.SermonRepository
@@ -10,13 +10,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+class SermonDetailsViewModelFactory(private val sermonId: String) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SermonDetailsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SermonDetailsViewModel(sermonId) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 class SermonDetailsViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val sermonId: String,
     private val repository: SermonRepository = SermonRepository()
 ) : ViewModel() {
 
-    // Add this property
-    private val sermonId: String = savedStateHandle.get<String>("sermonId") ?: ""
 
     private val _sermon = MutableStateFlow<Sermon?>(null)
     val sermon: StateFlow<Sermon?> = _sermon.asStateFlow()
@@ -58,7 +66,7 @@ class SermonDetailsViewModel(
 
     fun retry() {
         if (sermonId.isNotBlank()) {
-            fetchSermon(sermonId)  // now it works — sermonId is a property
+            fetchSermon(sermonId)
         }
     }
 }
