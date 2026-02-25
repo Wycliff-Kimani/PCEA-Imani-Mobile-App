@@ -36,7 +36,11 @@ class MainActivity : ComponentActivity() {
                         BottomNavigationBar(navController)
                     }
                 ) { innerPadding ->
-                    AppNavGraph(navController)
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)) {
+                        AppNavGraph(navController)
+                    }
                 }
             }
         }
