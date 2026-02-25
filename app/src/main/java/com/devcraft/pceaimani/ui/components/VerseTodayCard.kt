@@ -60,14 +60,15 @@ fun VerseTodayCard(verseText: String, verseNumber: String) {
                     text = "Verse of the Week",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = White
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = verseText,
-                color = White
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
