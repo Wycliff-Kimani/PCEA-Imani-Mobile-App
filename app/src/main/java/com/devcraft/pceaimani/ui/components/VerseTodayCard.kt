@@ -32,7 +32,7 @@ fun VerseTodayCard(verseText: String, verseNumber: String) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
