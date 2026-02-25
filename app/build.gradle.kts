@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.androidx.media3.session)
 
 // Lifecycle for collectAsStateWithLifecycle
-    implementation(libs.androidx.lifecycle.runtime.compose)  // or latest
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
 
     implementation(libs.ui)

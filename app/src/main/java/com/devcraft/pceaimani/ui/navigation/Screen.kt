@@ -44,7 +44,11 @@ sealed class Screen(
         icon = FontAwesomeIcons.Solid.UserCircle
     )
 
-    object SermonDetail : Screen(route="sermon_detail/{sermonId}", title = "Sermon Details", icon = FontAwesomeIcons.Solid.Bible) {
+    object SermonDetail : Screen(
+        route="sermon_detail/{sermonId}",
+        title = "Sermon Details",
+        icon = FontAwesomeIcons.Solid.Bible)
+    {
         fun createRoute(sermonId: String) = "sermon_detail/$sermonId"
     }
 }

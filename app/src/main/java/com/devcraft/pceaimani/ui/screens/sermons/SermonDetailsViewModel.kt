@@ -1,6 +1,5 @@
 package com.devcraft.pceaimani.ui.screens.sermons
 
-
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +8,6 @@ import com.devcraft.pceaimani.data.repository.SermonRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class SermonDetailsViewModel(
@@ -17,7 +15,8 @@ class SermonDetailsViewModel(
     private val repository: SermonRepository = SermonRepository()
 ) : ViewModel() {
 
-    private val sermonId: String = checkNotNull(savedStateHandle["sermonId"])
+    // Add this property
+    private val sermonId: String = savedStateHandle.get<String>("sermonId") ?: ""
 
     private val _sermon = MutableStateFlow<Sermon?>(null)
     val sermon: StateFlow<Sermon?> = _sermon.asStateFlow()
@@ -29,27 +28,37 @@ class SermonDetailsViewModel(
     val error: StateFlow<String?> = _error.asStateFlow()
 
     init {
-        loadSermon()
+        if (sermonId.isBlank()) {
+            _error.value = "Sermon ID not provided."
+            _isLoading.value = false
+        } else {
+            fetchSermon(sermonId)
+        }
     }
 
-    private fun loadSermon() {
+    private fun fetchSermon(sermonId: String) {
+        _isLoading.value = true
+        _error.value = null
         viewModelScope.launch {
-            repository.getSermonById(sermonId)
-                .catch { e ->
-                    _error.value = e.localizedMessage ?: "Failed to load sermon"
-                    _isLoading.value = false
-                }
-                .collect { loadedSermon ->
-                    _sermon.value = loadedSermon
-                    _isLoading.value = false
-                    _error.value = null
-                }
+            try {
+                repository.getSermonById(sermonId)
+                    .collect { sermon ->
+                        _sermon.value = sermon
+                        _isLoading.value = false
+                        if (sermon == null) {
+                            _error.value = "Sermon not found."
+                        }
+                    }
+            } catch (e: Exception) {
+                _error.value = "Failed to load: ${e.message}"
+                _isLoading.value = false
+            }
         }
     }
 
     fun retry() {
-        _isLoading.value = true
-        _error.value = null
-        loadSermon()
+        if (sermonId.isNotBlank()) {
+            fetchSermon(sermonId)  // now it works — sermonId is a property
+        }
     }
 }

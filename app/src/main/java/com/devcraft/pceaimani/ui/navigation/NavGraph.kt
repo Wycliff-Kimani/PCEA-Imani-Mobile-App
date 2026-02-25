@@ -1,5 +1,6 @@
 package com.devcraft.pceaimani.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -19,16 +20,16 @@ fun AppNavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = Screen.Home.route
     ) {
+        composable(Screen.Home.route) {
+            HomeScreen()
+        }
+
         composable(Screen.Sermons.route) {
             SermonsScreen(
                 onSermonClick = { sermonId ->
                     navController.navigate(Screen.SermonDetail.createRoute(sermonId))
                 }
             )
-        }
-
-        composable(Screen.Sermons.route) {
-            SermonsScreen()
         }
 
         composable(Screen.Bible.route) {
@@ -43,15 +44,15 @@ fun AppNavGraph(navController: NavHostController) {
             AccountScreen()
         }
 
+
         composable(
             route = Screen.SermonDetail.route,
             arguments = listOf(
-                navArgument("sermonId") {
-                    type = NavType.StringType
-                }
+                navArgument("sermonId") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val sermonId = backStackEntry.arguments?.getString("sermonId") ?: ""
+
             SermonDetailsScreen(
                 sermonId = sermonId,
                 onBackClick = { navController.popBackStack() }

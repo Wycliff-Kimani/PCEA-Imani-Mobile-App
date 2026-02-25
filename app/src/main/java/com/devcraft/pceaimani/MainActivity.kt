@@ -1,6 +1,5 @@
 package com.devcraft.pceaimani
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,7 +11,6 @@ import com.devcraft.pceaimani.ui.navigation.AppNavGraph
 import com.devcraft.pceaimani.ui.theme.PCEAImaniTheme
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -23,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         BottomNavigationBar(navController)
                     }
-                ) {
+                ) { innerPadding ->
                     AppNavGraph(navController)
                 }
             }
