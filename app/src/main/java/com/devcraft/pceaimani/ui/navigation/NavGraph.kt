@@ -11,6 +11,7 @@ import com.devcraft.pceaimani.ui.screens.account.AccountScreen
 import com.devcraft.pceaimani.ui.screens.bible.BibleScreen
 import com.devcraft.pceaimani.ui.screens.home.HomeScreen
 import com.devcraft.pceaimani.ui.screens.sermons.SermonDetailsScreen
+import com.devcraft.pceaimani.ui.screens.sermons.SermonsScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
