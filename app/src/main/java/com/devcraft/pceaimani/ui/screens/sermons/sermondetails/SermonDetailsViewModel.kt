@@ -22,7 +22,7 @@ class SermonDetailsViewModelFactory(private val sermonId: String) : ViewModelPro
 
 class SermonDetailsViewModel(
     private val sermonId: String,
-    private val repository: SermonRepository = SermonRepository()
+    private val repository: SermonRepository = SermonRepository
 ) : ViewModel() {
 
 
