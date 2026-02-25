@@ -29,6 +29,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             PCEAImaniTheme {
                 Scaffold(
+                    topBar = {
+                        ScaffoldTopBar(navController)
+                    },
                     bottomBar = {
                         BottomNavigationBar(navController)
                     }
