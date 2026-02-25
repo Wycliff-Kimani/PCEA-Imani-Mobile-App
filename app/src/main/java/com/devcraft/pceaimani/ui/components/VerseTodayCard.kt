@@ -38,21 +38,11 @@ fun VerseTodayCard(verseText: String, verseNumber: String) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .background(
-                            color = White,
-                            shape = MaterialTheme.shapes.small
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.verse_of_the_week_icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(54.dp)
-                    )
-                }
+                Image(
+                    painter = painterResource(id = R.drawable.verse_of_the_week_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp)
+                )
 
                 Spacer(modifier = Modifier.width(12.dp))
 
