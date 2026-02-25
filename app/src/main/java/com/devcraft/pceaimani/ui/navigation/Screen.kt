@@ -6,7 +6,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Bible
 import compose.icons.fontawesomeicons.solid.CalendarAlt
 import compose.icons.fontawesomeicons.solid.ChalkboardTeacher
-import compose.icons.fontawesomeicons.solid.Home
+import compose.icons.fontawesomeicons.solid.Church
 import compose.icons.fontawesomeicons.solid.UserCircle
 
 sealed class Screen(
