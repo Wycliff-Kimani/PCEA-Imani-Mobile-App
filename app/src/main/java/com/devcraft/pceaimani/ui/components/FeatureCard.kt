@@ -39,10 +39,7 @@ fun FeatureCard(
                 contentDescription = title,
                 modifier = Modifier.size(54.dp)
             )
-
-            Spacer(
-                modifier = Modifier.height(13.dp)
-            )
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = title,
