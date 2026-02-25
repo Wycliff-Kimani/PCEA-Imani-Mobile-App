@@ -37,7 +37,7 @@ fun FeatureCard(
             Image(
                 painter = painterResource(id = icon),
                 contentDescription = title,
-                modifier = Modifier.size(60.dp)
+                modifier = Modifier.size(54.dp)
             )
 
             Spacer(
