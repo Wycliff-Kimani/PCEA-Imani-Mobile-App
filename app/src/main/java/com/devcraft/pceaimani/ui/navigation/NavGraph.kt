@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.devcraft.pceaimani.ui.screens.Events.EventsScreen
-import com.devcraft.pceaimani.ui.screens.sermons.SermonsScreen
 import com.devcraft.pceaimani.ui.screens.account.AccountScreen
 import com.devcraft.pceaimani.ui.screens.bible.BibleScreen
 import com.devcraft.pceaimani.ui.screens.home.HomeScreen
