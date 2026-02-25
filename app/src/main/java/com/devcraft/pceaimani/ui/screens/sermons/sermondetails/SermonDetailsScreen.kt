@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalContext
 import com.devcraft.pceaimani.utils.formattedDate
 
 @Composable
@@ -112,9 +114,16 @@ fun SermonDetailsScreen(
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                 ) {
+                    val context = LocalContext.current
+                    val imageUrl = currentSermon.coverImageUrl.takeIf { it.isNotBlank() }
+                        ?: "https://via.placeholder.com/600x400/0D47A1/FFFFFF?text=Sermon"
+
                     AsyncImage(
-                        model = currentSermon.coverImageUrl.takeIf { it.isNotBlank() }
-                            ?: "https://via.placeholder.com/600x400/0D47A1/FFFFFF?text=Sermon",
+                        model = ImageRequest.Builder(context)
+                            .data(imageUrl)
+                            .crossfade(true)
+                            .placeholder(com.devcraft.pceaimani.R.drawable.sermons_icon)
+                            .build(),
                         contentDescription = "Cover",
                         modifier = Modifier
                             .fillMaxWidth()

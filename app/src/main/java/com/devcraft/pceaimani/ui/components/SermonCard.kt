@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import androidx.compose.ui.platform.LocalContext
 import com.devcraft.pceaimani.data.model.Sermon
 import com.devcraft.pceaimani.utils.formattedDate
 
@@ -44,9 +45,12 @@ fun SermonsCard(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
+                val context = LocalContext.current
+                val imageUrl = sermon.coverImageUrl.takeIf { it.isNotBlank() }
+                    ?: "https://via.placeholder.com/300x200/0D47A1/FFFFFF?text=PCEA+Imani"
+
                 AsyncImage(
-                    model = sermon.coverImageUrl.takeIf { it.isNotBlank() }
-                        ?: "https://via.placeholder.com/300x200/0D47A1/FFFFFF?text=PCEA+Imani",
+                    model = imageUrl,
                     contentDescription = "Sermon cover: ${sermon.title}",
                     modifier = Modifier
                         .fillMaxSize()

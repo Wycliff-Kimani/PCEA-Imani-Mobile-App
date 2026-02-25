@@ -6,12 +6,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.devcraft.pceaimani.ui.components.SermonsCard
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -23,6 +27,18 @@ fun SermonsScreen(
     val sermons by viewModel.sermons.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    val imageLoader = ImageLoader(context)
+
+    // Prefetch top few images to reduce visual latency when navigating
+    LaunchedEffect(sermons) {
+        val urls = sermons.take(3).mapNotNull { it.coverImageUrl.takeIf { url -> url.isNotBlank() } }
+        urls.forEach { url ->
+            val request = ImageRequest.Builder(context).data(url).build()
+            imageLoader.enqueue(request)
+        }
+    }
 
     when {
         isLoading -> {
