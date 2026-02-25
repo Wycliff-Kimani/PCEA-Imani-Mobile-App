@@ -26,6 +26,12 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+
+            // Check permission for internet access and request if not granted
+            if (checkSelfPermission(android.Manifest.permission.INTERNET) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.INTERNET), 1)
+            }
+
             val navController = rememberNavController()
             PCEAImaniTheme {
                 Scaffold(
