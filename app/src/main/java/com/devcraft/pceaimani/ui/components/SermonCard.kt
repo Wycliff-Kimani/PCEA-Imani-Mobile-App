@@ -20,13 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.devcraft.pceaimani.data.model.Sermon
-
-// Safe date formatting for minSdk 24
-fun Sermon.formattedDate(): String {
-    val timestamp = datePreached ?: createdAt
-    return timestamp?.toDate()?.toString() ?: "Date not available"
-    // This shoudl show something lik Thu Jan 15 13:22:20 GMT+03:00 2026 r sth whatever aahhhhhghghgg
-}
+import com.devcraft.pceaimani.utils.formattedDate
 
 @Composable
 fun SermonsCard(
