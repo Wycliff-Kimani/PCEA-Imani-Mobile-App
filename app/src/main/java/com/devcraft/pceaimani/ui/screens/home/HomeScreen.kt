@@ -2,6 +2,7 @@ package com.devcraft.pceaimani.ui.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,23 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.devcraft.pceaimani.R
 import com.devcraft.pceaimani.ui.components.FeatureCard
+import com.devcraft.pceaimani.ui.components.TopApp
 import com.devcraft.pceaimani.ui.components.VerseTodayCard
 import com.devcraft.pceaimani.ui.theme.lightBlue
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,43 +44,11 @@ fun HomeScreen() {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
-        TopAppBar(
-            title = {
-                Column {
-                    Text(
-                        text = "Welcome to PCEA Imani",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = "Your spiritual companion",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            },
-            actions = {
-                IconButton(
-                    onClick = { /* TODO: Handle notifications click */ }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "Notifications",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-                IconButton(
-                    onClick = { /* TODO: Handle account click */ }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Account",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
+        TopApp(
+            title = "PCEA Imani",
+            showHomeSubtitle = true   //
         )
+
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -106,7 +72,8 @@ fun HomeScreen() {
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(bottom = 120.dp)
             ) {
                 items(features) { (title, icon) ->
                     FeatureCard(
@@ -115,6 +82,13 @@ fun HomeScreen() {
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(15.dp))
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
 }

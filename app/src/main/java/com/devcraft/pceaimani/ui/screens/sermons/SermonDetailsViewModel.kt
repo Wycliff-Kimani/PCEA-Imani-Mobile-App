@@ -1,5 +1,7 @@
 package com.devcraft.pceaimani.ui.screens.sermons
 
+
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devcraft.pceaimani.data.model.Sermon
@@ -7,14 +9,18 @@ import com.devcraft.pceaimani.data.repository.SermonRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class SermonsViewModel(
+class SermonDetailsViewModel(
+    savedStateHandle: SavedStateHandle,
     private val repository: SermonRepository = SermonRepository()
 ) : ViewModel() {
 
-    private val _sermons = MutableStateFlow<List<Sermon>>(emptyList())
-    val sermons: StateFlow<List<Sermon>> = _sermons.asStateFlow()
+    private val sermonId: String = checkNotNull(savedStateHandle["sermonId"])
+
+    private val _sermon = MutableStateFlow<Sermon?>(null)
+    val sermon: StateFlow<Sermon?> = _sermon.asStateFlow()
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -23,20 +29,27 @@ class SermonsViewModel(
     val error: StateFlow<String?> = _error.asStateFlow()
 
     init {
-        fetchSermons()
+        loadSermon()
     }
 
-    fun fetchSermons() {
-        _isLoading.value = true     // show loading again on manual refresh/retry
-        _error.value = null         // clear previous error
-
+    private fun loadSermon() {
         viewModelScope.launch {
-            repository.getSermons()
-                .collect { sermonList ->
-                    _sermons.value = sermonList
+            repository.getSermonById(sermonId)
+                .catch { e ->
+                    _error.value = e.localizedMessage ?: "Failed to load sermon"
+                    _isLoading.value = false
+                }
+                .collect { loadedSermon ->
+                    _sermon.value = loadedSermon
                     _isLoading.value = false
                     _error.value = null
                 }
         }
+    }
+
+    fun retry() {
+        _isLoading.value = true
+        _error.value = null
+        loadSermon()
     }
 }
