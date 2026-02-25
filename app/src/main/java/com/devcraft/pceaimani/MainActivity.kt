@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.devcraft.pceaimani.ui.components.BottomNavigationBar
+import com.devcraft.pceaimani.ui.components.ScaffoldTopBar
 import com.devcraft.pceaimani.ui.navigation.AppNavGraph
 import com.devcraft.pceaimani.ui.theme.PCEAImaniTheme
 
