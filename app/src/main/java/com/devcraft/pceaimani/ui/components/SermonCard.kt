@@ -32,8 +32,8 @@ fun Sermon.formattedDate(): String {
 @Composable
 fun SermonsCard(
     sermon: Sermon,
-    onClick: (Sermon) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = {}
 ) {
     Card(
         modifier = modifier
