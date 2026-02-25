@@ -24,10 +24,11 @@ import androidx.compose.ui.unit.dp
 fun FeatureCard(
     title: String,
     icon: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
     ) {
         Column(
             modifier = Modifier
