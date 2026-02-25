@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SermonsViewModel(
-    private val repository: SermonRepository = SermonRepository()
+    private val repository: SermonRepository = SermonRepository
 ) : ViewModel() {
 
     private val _sermons = MutableStateFlow<List<Sermon>>(emptyList())

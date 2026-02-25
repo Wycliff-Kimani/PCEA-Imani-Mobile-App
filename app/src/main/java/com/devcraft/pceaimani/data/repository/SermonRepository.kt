@@ -1,50 +1,45 @@
 package com.devcraft.pceaimani.data.repository
 
-
 import com.devcraft.pceaimani.data.model.Sermon
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 
-class SermonRepository {
+object SermonRepository {
 
-    private val firestore = FirebaseFirestore.getInstance()
+    // In-memory cached state of sermons, updated by a single snapshot listener
+    private val _sermonsState = MutableStateFlow<List<Sermon>>(emptyList())
+    val sermonsState = _sermonsState.asStateFlow()
 
-    fun getSermons(): Flow<List<Sermon>> = callbackFlow {
-        val listener = firestore.collection("Sermons")
+    init {
+        // Instantiate firestore locally to avoid holding a static Context reference
+        val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+
+        // Attach a single snapshot listener to keep the cache updated
+        firestore.collection("Sermons")
             .orderBy("datePreached", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
-
                 if (error != null) {
-                    close(error)
+                    // keep the previous cached value
                     return@addSnapshotListener
                 }
-
                 if (snapshot != null) {
                     val sermons = snapshot.documents.mapNotNull { document ->
                         val sermon = document.toObject(Sermon::class.java)
                         sermon?.copy(id = document.id)
                     }
-
-                    trySend(sermons)
+                    _sermonsState.value = sermons
                 }
             }
-
-        awaitClose { listener.remove() }
     }
 
-    fun getSermonById(id: String): Flow<Sermon?> = callbackFlow {
-        val docRef = firestore.collection("Sermons").document(id)
-        val listener = docRef.addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                close(error)
-                return@addSnapshotListener
-            }
-            val sermon = snapshot?.toObject(Sermon::class.java)?.copy(id = snapshot.id)
-            trySend(sermon)
-        }
-        awaitClose { listener.remove() }
+    // Return the cached sermons as a Flow (immediate emission)
+    fun getSermons(): Flow<List<Sermon>> = sermonsState
+
+    // Return matching sermon from the cache; updates when cache updates
+    fun getSermonById(id: String): Flow<Sermon?> = sermonsState.map { list ->
+        list.find { it.id == id }
     }
 }
