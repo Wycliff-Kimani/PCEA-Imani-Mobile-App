@@ -1,5 +1,7 @@
 package com.devcraft.pceaimani.data.model
 
+import com.google.firebase.Timestamp
+
 data class Sermon(
     val id: String = "",
     val title: String = "",
@@ -10,6 +12,6 @@ data class Sermon(
     val coverImageUrl: String = "",
     val durationMinutes: Int = 0,
     val language: String = "",
-    val createdAt: com.google.firebase.Timestamp? = null,
-    val datePreached: com.google.firebase.Timestamp? = null
+    val createdAt: Timestamp? = null,
+    val datePreached: Timestamp? = null
 )
