@@ -40,7 +40,7 @@ fun SermonsCard(
             .fillMaxWidth()
             .height(160.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable { onClick(sermon) },
+            .clickable { onClick(sermon.id) },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
