@@ -145,17 +145,3 @@ fun SermonsCard(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun SermonsCardPreview() {
-    val sample = Sermon(
-        title = "Thanksgiving to the Almighty",
-        preacher = "Rev. John Mwangi",
-        datePreached = com.google.firebase.Timestamp.now(),
-        durationMinutes = 45,
-        language = "en",
-        audioUrl = "example.com"
-    )
-    SermonsCard(sermon = sample)
-}
