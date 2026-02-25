@@ -46,7 +46,7 @@ fun BottomNavigationBar(navController: NavController) {
                 label = {
                     Text(screen.title)
                 },
-                alwaysShowLabel = true
+                alwaysShowLabel = currentRoute == screen.route
             )
         }
     }
