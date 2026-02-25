@@ -70,7 +70,7 @@ fun VerseTodayCard(verseText: String, verseNumber: String) {
                 color = White
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "- $verseNumber",
