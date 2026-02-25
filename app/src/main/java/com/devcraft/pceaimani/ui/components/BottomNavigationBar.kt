@@ -41,7 +41,6 @@ fun BottomNavigationBar(navController: NavController) {
                         contentDescription = screen.title,
                         modifier = Modifier.size(24.dp)
                     )
-
                 },
                 label = {
                     Text(screen.title)
